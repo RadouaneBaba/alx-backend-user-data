@@ -11,6 +11,8 @@ def filter_datum(
     result = message
     for field in fields:
         result = re.sub(
-            f"{field}=.*?{separator}", f"{field}={redaction}{separator}", result
+            f"{field}=.*?{separator}",
+            f"{field}={redaction}{separator}",
+            result
         )
     return result
