@@ -32,8 +32,9 @@ def get_logger() -> logging.Logger:
     """PII logger implementation"""
     logger = logging.getLogger("user_data")
     logger.setLevel(logging.INFO)
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setFormatter(RedactingFormatter)
+    logger.propagate = False
+    handler = logging.StreamHandler()
+    handler.setFormatter(RedactingFormatter(PII_FIELDS))
 
     logger.addHandler(handler)
     return logger
