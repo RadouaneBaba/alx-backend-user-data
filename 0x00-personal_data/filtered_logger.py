@@ -3,6 +3,10 @@
 from typing import List
 import re
 import logging
+import sys
+
+
+PII_FIELDS = ("name", "email", "ssn", "password", "ip")
 
 
 class RedactingFormatter(logging.Formatter):
@@ -17,9 +21,22 @@ class RedactingFormatter(logging.Formatter):
         self._fields = fields
 
     def format(self, record: logging.LogRecord) -> str:
-        record.msg = filter_datum(self._fields, self.REDACTION, record.msg,
-            self.SEPARATOR)
+        """Format the record"""
+        record.msg = filter_datum(
+            self._fields, self.REDACTION, record.msg, self.SEPARATOR
+        )
         return super(RedactingFormatter, self).format(record)
+
+
+def get_logger() -> logging.Logger:
+    """PII logger implementation"""
+    logger = logging.getLogger("user_data")
+    logger.setLevel(logging.INFO)
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setFormatter(RedactingFormatter)
+
+    logger.addHandler(handler)
+    return logger
 
 
 def filter_datum(
