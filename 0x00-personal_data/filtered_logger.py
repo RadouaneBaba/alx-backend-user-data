@@ -44,10 +44,10 @@ def get_logger() -> logging.Logger:
 def get_db() -> mysql.connector.connection.MySQLConnection:
     """database connection using env variables"""
     return mysql.connector.connect(
-        host=os.environ.get("PERSONAL_DATA_DB_HOST"),
-        user=os.environ.get("PERSONAL_DATA_DB_USERNAME"),
-        password=os.environ.get("PERSONAL_DATA_DB_PASSWORD"),
-        database=os.environ.get("PERSONAL_DATA_DB_NAME"),
+        host=os.getenv("PERSONAL_DATA_DB_HOST", "localhost"),
+        user=os.getenv("PERSONAL_DATA_DB_USERNAME", "root"),
+        password=os.getenv("PERSONAL_DATA_DB_PASSWORD", ""),
+        database=os.getenv("PERSONAL_DATA_DB_NAME"),
     )
 
 
@@ -63,3 +63,21 @@ def filter_datum(
             result,
         )
     return result
+
+
+def main():
+    """main funciton implementation"""
+    cnx = get_db()
+    cursor = cnx.cursor()
+
+    query = "SELECT * FROM users;"
+    cursor.execute(query)
+    logger = get_logger()
+    for row in cursor:
+        logger.info(row)
+    cursor.close()
+    cnx.close()
+
+
+if __name__ == "__main__":
+    main()
