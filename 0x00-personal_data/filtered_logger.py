@@ -3,10 +3,11 @@
 from typing import List
 import re
 import logging
-import sys
+import os
+import mysql.connector
 
 
-PII_FIELDS = ("name", "email", "ssn", "password", "ip")
+PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
 class RedactingFormatter(logging.Formatter):
@@ -38,6 +39,16 @@ def get_logger() -> logging.Logger:
 
     logger.addHandler(handler)
     return logger
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """database connection using env variables"""
+    return mysql.connector.connect(
+        host=os.environ.get("PERSONAL_DATA_DB_HOST"),
+        user=os.environ.get("PERSONAL_DATA_DB_USERNAME"),
+        password=os.environ.get("PERSONAL_DATA_DB_PASSWORD"),
+        database=os.environ.get("PERSONAL_DATA_DB_NAME"),
+    )
 
 
 def filter_datum(
