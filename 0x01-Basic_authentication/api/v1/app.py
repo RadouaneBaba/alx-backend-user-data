@@ -41,7 +41,7 @@ def forbidden(error) -> str:
 @app.before_request
 def before_requet():
     """before_request auth"""
-    if auth is None or auth.require_auth(
+    if auth is None or not auth.require_auth(
         request.path,
         ["/api/v1/status/", "/api/v1/unauthorized/", "/api/v1/forbidden/"],
     ):
