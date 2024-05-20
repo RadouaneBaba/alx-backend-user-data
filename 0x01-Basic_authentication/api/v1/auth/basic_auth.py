@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Doc Doc DOc"""
-from auth import Auth
+from api.v1.auth.auth import Auth
 
 
 class BasicAuth(Auth):
