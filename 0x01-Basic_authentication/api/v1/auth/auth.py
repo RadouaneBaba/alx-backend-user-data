@@ -11,7 +11,12 @@ class Auth:
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """reuire auth doc"""
-        return False
+        if path is None or excluded_paths in ["", None]:
+            return True
+        new_path = path if path[-1] == "/" else path + "/"
+        if new_path in excluded_paths:
+            return False
+        return True
 
     def authorization_header(self, request=None) -> str:
         """Authorization header"""
