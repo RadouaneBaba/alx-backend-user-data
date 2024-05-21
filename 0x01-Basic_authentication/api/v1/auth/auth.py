@@ -11,8 +11,11 @@ class Auth:
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """reuire auth doc"""
-        if path is None or excluded_paths in ["", None]:
+        if path is None:
             return True
+        if excluded_paths is None or len(excluded_paths) == 0:
+            return True
+
         new_path = path if path[-1] == "/" else path + "/"
         for e_path in excluded_paths:
             if e_path[-1] == "*":
