@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """doc doc doc"""
-from flask import jsonify, request
+from flask import jsonify, request, abort
 from api.v1.views import app_views
 from models.user import User
 from os import getenv
@@ -36,3 +36,17 @@ def view_session_login() -> str:
         return resp
     except Exception:
         return jsonify({"error": "no user found for this email"}), 404
+
+
+@app_views.route(
+    "/auth_session/logout", methods=["DELETE"], strict_slashes=False
+)
+def view_session_logout():
+    """
+    DELETE /api/v1/auth_session/logout
+    """
+    from api.v1.app import auth
+
+    if not auth.destroy_session(request):
+        abort(404)
+    return jsonify({}), 200
