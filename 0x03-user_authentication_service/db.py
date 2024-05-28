@@ -43,3 +43,16 @@ class DB:
             return query
         except (InvalidRequestError, NoResultFound) as e:
             raise e
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """Update a user with user_id"""
+        try:
+            user = self.find_user_by(id=user_id)
+            if not user:
+                raise ValueError
+            for key, value in kwargs.items():
+                user[key] = value
+
+            self._session.commit()
+        except Exception:
+            raise ValueError
