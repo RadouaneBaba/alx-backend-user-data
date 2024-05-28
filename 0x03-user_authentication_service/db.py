@@ -48,10 +48,11 @@ class DB:
         """Update a user with user_id"""
         try:
             user = self.find_user_by(id=user_id)
-            if not user:
-                raise ValueError
             for key, value in kwargs.items():
-                setattr(user, key, value)
+                if hasattr(user, key):
+                    setattr(user, key, value)
+                else:
+                    raise ValueError
 
             self._session.commit()
         except Exception:
