@@ -51,7 +51,7 @@ class DB:
             if not user:
                 raise ValueError
             for key, value in kwargs.items():
-                user[key] = value
+                setattr(user, key, value)
 
             self._session.commit()
         except Exception:
