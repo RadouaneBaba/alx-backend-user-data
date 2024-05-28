@@ -42,4 +42,4 @@ class DB:
             query = self._session.query(User).filter_by(**kwargs).one()
             return query
         except (InvalidRequestError, NoResultFound) as e:
-            raise (e)
+            raise e
