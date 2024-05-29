@@ -48,3 +48,13 @@ class Auth:
             return False
         except Exception:
             return False
+
+    def create_session(self, email: str) -> str:
+        """create session doc"""
+        try:
+            user = self._db.find_user_by(email=email)
+            session_gen = _generate_uuid()
+            self._db.update_user(user.id, session_id=session_gen)
+            return session_gen
+        except Exception:
+            return None
