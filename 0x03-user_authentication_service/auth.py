@@ -92,6 +92,7 @@ class Auth:
             self._db.update_user(
                 user.id,
                 hashed_password=_hash_password(password).decode("utf-8"),
+                reset_token=None,
             )
             return None
         except Exception:
